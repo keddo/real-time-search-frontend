@@ -1,5 +1,5 @@
-// const baseUrl = 'https://real-time-search-analytics-app.onrender.com/';
-const baseUrl = 'http://localhost:3000';
+const baseUrl = 'https://real-time-search-analytics-app.onrender.com/';
+// const baseUrl = 'http://localhost:3000';
 
 document.addEventListener('DOMContentLoaded', () => {
     articles()
