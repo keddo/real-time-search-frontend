@@ -1,16 +1,19 @@
-const baseUrl = 'https://real-time-search-analytics-app.onrender.com/';
+// const baseUrl = 'https://real-time-search-analytics-app.onrender.com/';
+const baseUrl = 'http://localhost:3000';
 
 document.addEventListener('DOMContentLoaded', () => {
     articles()
     const searchBox = document.getElementById('search-box');
     searchBox.addEventListener('input', function (event) {
         const keyword = event.target.value.trim().toLowerCase();
-        filterArticles(keyword);
+        if (keyword)
+            filterArticles(keyword);
     });
 
     searchBox.addEventListener('blur', function (event) {
         const keyword = event.target.value.trim().toLowerCase();
-        recordSearch(keyword)
+        if (keyword)
+            recordSearch(keyword)
     });
 
     populateSearchAnalytics()
@@ -65,7 +68,6 @@ function filterArticles(keyword) {
     if (articles) {
         try {
             articles = JSON.parse(articles);
-
             // Check if articles is an array
             if (Array.isArray(articles)) {
                 // Filter articles based on the search keyword
@@ -107,9 +109,11 @@ const populateSearchAnalytics = async () => {
     let searchHistory;
     const response = await fetch(`${baseUrl}/api/search/analytics`)
     searchHistory = await response.json();
-
+    console.log(searchHistory)
     // Populate the table with sample data
-    populateTable(searchHistory);
+    if (searchHistory) {
+        populateTable(searchHistory);
+    }
 }
 
 // Function to populate the table with search history data
@@ -130,9 +134,9 @@ function populateTable(data) {
 }
 
 // function to decide such that search term should be recorded or ignored
-function recordSearch(searchTerm) {
-
-    fetch(`${baseUrl}/api/articles/search/${searchTerm}`)
-        .then(res => res.json())
-        .then(data => console.log(data))
+async function recordSearch(searchTerm) {
+    console.log(searchTerm)
+    const response = await fetch(`${baseUrl}/api/articles/search/${searchTerm}`)
+    const data = await response.json();
+    console.log(data)
 }
